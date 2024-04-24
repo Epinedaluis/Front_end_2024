@@ -1,15 +1,26 @@
 import { useForm } from "./Hooks/UseForm"
-
 const taskInfo = {
     task: "",
     description: "",
-    limit: "",
     location: "",
+    limit: ""
 }
-
-const TaskModal = () => {
+const TaskModal = ({ taskList,setTaskList }) => {
     const [values, handleInputChange, reset] = useForm(taskInfo)
 
+    const handleSaveClick = () => {
+        setTaskList([
+            ...taskList,
+            {
+                id: taskList.length + 1,
+                ...values,
+                isDone: false
+            }
+        ])
+
+        localStorage.setItem("taskList", JSON.stringify(taskList))
+        reset()
+    }
     return (
         <div className="modal fade" id={"TaskModal"}>
             <div className="modal-dialog modal-dialog-centered">
@@ -24,57 +35,50 @@ const TaskModal = () => {
                     <div className="modal-body">
                         <div className="row">
                             <div className="col text-start">
-                                <label
-                                    className="form-label"
+                                <label className="form-label"
                                     htmlFor="task"
-                                >
-                                    Task
-                                </label>
-
-                                <input className="form-control"
+                                > Task </label>
+                                <input
+                                    className="form-control"
                                     id="task"
                                     name="task"
                                     onChange={handleInputChange}
                                     type="text"
                                     value={values.task}
                                 />
-
                                 <label
                                     className="form-label"
-                                    htmlFor="description">
-                                    Description
+                                    htmlFor="description" //Esta etiqueta es para la descripción
+                                > Description
                                 </label>
-
                                 <textarea
                                     className="form-control"
                                     id="description"
+                                    onChange={handleInputChange}
                                     name="description"
-                                    onChange={handleInputChange}
-                                    value={values.description}></textarea>
-
-
+                                    value={values.description}
+                                ></textarea>
                                 <label
-                                    className="form-label">
-                                    Location
-                                </label>
-                                <input className="form-control"
+                                    className="form-label"
+                                    htmlFor="location"
+                                >Location</label>
+                                <input
+                                    className="form-control"
                                     id="location"
+                                    onChange={handleInputChange}
                                     name="location"
-                                    onChange={handleInputChange}
-                                    value={values.location}
                                     type="text"
+                                    value={values.location}
                                 />
-
-                                <label className="form-label"
+                                <label
+                                    className="form-label"
                                     htmlFor="limit"
-                                >
-                                    Limit
-                                </label>
-
-                                <input className="form-control"
+                                >Limit</label>
+                                <input
+                                    className="form-control"
                                     id="limit"
-                                    name="limit"
                                     onChange={handleInputChange}
+                                    name="limit"
                                     type="time"
                                     value={values.limit}
                                 />
@@ -84,8 +88,9 @@ const TaskModal = () => {
                     </div>
                     <div className="modal-footer">
 
-                        <button className="btn btn-sm btn-primary"
-                        onClick={() => console.log(values)}>
+                        <button
+                            className="btn btn-sm btn-primary"
+                            onClick={handleSaveClick}>
                             <i className="bi bi-pencil-square"></i>
                             Save
                         </button>

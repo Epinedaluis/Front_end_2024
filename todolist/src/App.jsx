@@ -1,34 +1,14 @@
+import { useState } from "react"
 import List from "./List"
 import TaskModal from "./TaskModal"
 
-const taskList = [
-  {
-  id: 1,
-  task: "Estudiar",
-  description:"Estudiar para el examen de calculo",
-  limit: "13:00",
-  location:"Escuela",
-  isDone: false,
-},
-{
-  id: 2,
-  task: "Practicar",
-  description:"Dormir 8 horas",
-  limit: "14:00",
-  location:"Casa",
-  isDone: false,
-},
-{
-  id: 3,
-  task: "Trabajar",
-  description:"Limpiar mi cuarto",
-  limit: "15:00",
-  location:"Casa",
-  isDone: false,
-}
-]
 
 function App() {
+  const [taskList, setTaskList] = useState(
+  JSON.parse(localStorage.getItem("taskList")) || []
+  )
+
+  localStorage.setItem("taskList", JSON.stringify(taskList)) 
 
   return (
     <div className="container">
@@ -40,7 +20,9 @@ function App() {
 
 <hr />
     <div className="text-end">
-      <TaskModal />
+      <TaskModal taskList={taskList} 
+      setTaskList={setTaskList}
+      />
       <button type="button" className="btn btn-primary" 
       data-bs-toggle="modal"
       data-bs-target="#TaskModal">
