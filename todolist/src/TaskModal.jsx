@@ -1,3 +1,5 @@
+import Swal from "sweetalert2"
+import PropTypes from "prop-types"
 import { useForm } from "./Hooks/UseForm"
 const taskInfo = {
     task: "",
@@ -5,21 +7,28 @@ const taskInfo = {
     location: "",
     limit: ""
 }
-const TaskModal = ({ taskList,setTaskList }) => {
+const TaskModal = ({ taskList, setTaskList }) => {
     const [values, handleInputChange, reset] = useForm(taskInfo)
 
     const handleSaveClick = () => {
-        setTaskList([
+        const newTaskList = [
             ...taskList,
             {
                 id: taskList.length + 1,
                 ...values,
                 isDone: false
             }
-        ])
+        ]
+
+        setTaskList(newTaskList)
 
         localStorage.setItem("taskList", JSON.stringify(taskList))
         reset()
+
+        Swal.fire({
+            icon: "success",
+            title: "Task added",
+        })
     }
     return (
         <div className="modal fade" id={"TaskModal"}>
@@ -90,8 +99,10 @@ const TaskModal = ({ taskList,setTaskList }) => {
 
                         <button
                             className="btn btn-sm btn-primary"
-                            onClick={handleSaveClick}>
-                            <i className="bi bi-pencil-square"></i>
+                            onClick={handleSaveClick}
+                            data-bs-dismiss="modal">
+                            <i className="bi bi-pencil-square" >
+                            </i>
                             Save
                         </button>
                         <button
@@ -108,6 +119,11 @@ const TaskModal = ({ taskList,setTaskList }) => {
         </div>
     )
 
+}
+
+TaskModal.propTypes = {
+    taskList: PropTypes.array.isRequired,
+    setTaskList: PropTypes.func.isRequired
 }
 
 export default TaskModal
