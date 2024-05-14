@@ -7,11 +7,28 @@ const taskInfo = {
     location: "",
     limit: ""
 }
-const TaskModal = ({ taskList, setTaskList }) => {
-    const [values, handleInputChange, reset] = useForm(taskInfo)
+const TaskModal = ({task = null , taskList, setTaskList }) => {
+    const [values, handleInputChange, reset] = useForm(task || taskInfo)
 
     const handleSaveClick = () => {
-        const newTaskList = [
+       let newTaskList = []
+
+     if (task) {
+        newTaskList = taskList.map((t) => {
+            if (t.id == task.id) {
+                t.task = values.task
+                t.description = values.description
+                location = values.location
+                t.limit = values.limit
+            }
+            return t
+            
+        })
+
+        } else{
+
+            
+        newTaskList = [
             ...taskList,
             {
                 id: taskList.length + 1,
@@ -19,6 +36,8 @@ const TaskModal = ({ taskList, setTaskList }) => {
                 isDone: false
             }
         ]
+
+        }
 
         setTaskList(newTaskList)
 
@@ -30,14 +49,22 @@ const TaskModal = ({ taskList, setTaskList }) => {
             title: "Task added",
         })
     }
+
+    const id = task?.id || ''
+
     return (
-        <div className="modal fade" id={"TaskModal"}>
+        <div className="modal fade" id={"TaskModal" +  id}>
             <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content">
                     <div className="modal-header">
                         <h5 className="modal-title"
                             id="taskModalLabel">
-                            Add new Task
+                            
+                            
+                                {task ? "Edit Task" : "Add Task"}
+                            
+
+
                         </h5>
 
                     </div>
@@ -123,7 +150,8 @@ const TaskModal = ({ taskList, setTaskList }) => {
 
 TaskModal.propTypes = {
     taskList: PropTypes.array.isRequired,
-    setTaskList: PropTypes.func.isRequired
+    setTaskList: PropTypes.func.isRequired,
+    task: PropTypes.object
 }
 
 export default TaskModal

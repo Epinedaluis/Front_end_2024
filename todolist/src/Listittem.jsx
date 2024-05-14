@@ -1,12 +1,19 @@
 import PropTypes from "prop-types"
 import ShowItemModal from "./ShowItemModal"
+import TaskModal from "./TaskModal"
 
-const Listittem = ({task}) => {
+const Listittem = ({task,taskList,setTaskList}) => {
     return (
       <>
       <div className="row">
           <div className="col-5">
             <ShowItemModal task={task} />
+            <TaskModal 
+            task={task}
+            taskList={taskList}
+            setTaskList={setTaskList}
+            />
+
             <input type="checkbox" />
             <button 
                className="btn btn-link"
@@ -30,7 +37,9 @@ const Listittem = ({task}) => {
   }
   
   Listittem.propTypes = {
-    task: PropTypes.object.isRequired
+    task: PropTypes.object.isRequired,
+    taskList: PropTypes.array.isRequired,
+    setTaskList: PropTypes.func.isRequired
   }
   
   export default Listittem
