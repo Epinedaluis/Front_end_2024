@@ -16,7 +16,7 @@ const App = () => {
       <hr />
 
       <div className="row">
-        <div className="col">
+      
 
           {
             cities.map((city, index) => (
@@ -26,7 +26,7 @@ const App = () => {
 
 
 
-        </div>
+        
 
       </div>
     </div>
